@@ -6,7 +6,7 @@ MAINTAINER Fran Tsao <tsao@gpul.org>
 RUN \
   groupadd -g 972 varnish
 RUN \
-  useradd -u 972 -s /bin/false -g varnishd varnishd
+  useradd -u 972 -s /bin/false -g varnish varnish
 # Install Varnish source build dependencies.
 RUN \
   yum install -y \
@@ -45,5 +45,5 @@ RUN \
   rm ../varnish-$VARNISH_VERSION.tar.gz
 
 EXPOSE 8080
-ENTRYPOINT [ "/usr/local/sbin/varnishd", "-j", "unix,user=varnishd", "-F", "-f", "/etc/varnish/default.vcl", "-a", "0.0.0.0:8080" ]
+ENTRYPOINT [ "/usr/local/sbin/varnishd", "-j", "unix,user=varnish", "-F", "-f", "/etc/varnish/default.vcl", "-a", "0.0.0.0:8080" ]
 
