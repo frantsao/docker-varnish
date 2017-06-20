@@ -2,7 +2,7 @@
 
 ## Supported tags and respective `Dockerfile` links
 
--	[`4.1.0`, `4.1`, `4`, `latest` (*4.1.0/Dockerfile*)](https://github.com/newsdev/docker-varnish/blob/4/Dockerfile)
+-	[`4.1.6`, `4.1`, `4`, `latest` (*4.1.6/Dockerfile*)](https://github.com/frantsao/docker-varnish/blob/master/Dockerfile)
 
 ## What is Varnish?
 
@@ -10,17 +10,17 @@
 
 > [wikipedia.org/wiki/Varnish_(software)](https://en.wikipedia.org/wiki/Varnish_(software))
 
-## How to use this image.
+## How to use this image
 
 This image is intended as a base image for other images to built on.
 
 ### Create a `Dockerfile` in your Varnish project
 
 ```dockerfile
-FROM newsdev/varnish:4.1.0
+FROM fran.tsao/varnish:4.1.6
 ```
 
-### Create a `default.vcl` in your Varnish project
+### Create a `default.vcl` in your Varnish project and copy to the directory config (i.e. /var/lib/docker/etc-varnish)
 
 ```vcl
 vcl 4.0;
@@ -35,7 +35,13 @@ Then, run the commands to build and run the Docker image:
 
 ```console
 $ docker build -t my-varnish .
-$ docker run -it --rm --name my-running-varnish my-varnish
+$ docker run -it --rm -d -p 80:8080 -v /var/lib/docker/etc-varnish:/etc/varnish -v /var/lib/docker/log-varnish:/var/log/varnish --name my-running-varnish my-varnish -s malloc,1024m 
+```
+
+So you can activate and store the logs if you want (i.e in order to debug):
+
+```console
+docker exec -it my-running-varnish varnishncsa -c -a -w /var/log/varnish/varnish.log
 ```
 
 ### Customize configuration
@@ -43,24 +49,14 @@ $ docker run -it --rm --name my-running-varnish my-varnish
 You can override the port Varnish serves in your Dockerfile.
 
 ```dockerfile
-FROM newsdev/varnish:4.1.0
+FROM frantsao/varnish:4.1.6
 
-ENV VARNISH_PORT 8080
-ENV VARNISH_DAEMON_OPTS "additional varnish options here"
-EXPOSE 8080
+ENV VARNISH_PORT 80
+EXPOSE 80
 ```
 
-For valid VARNISH_DAEMON_OPTS, see the [varnish options documentation](https://www.varnish-cache.org/docs/4.0/reference/varnishd.html#options).
+For valid varnish daemon opts to add at docker run, see the [varnish options documentation](https://www.varnish-cache.org/docs/4.1/reference/varnishd.html#options).
 
-
-
-You can override the size of the cache.
-
-```dockerfile
-FROM newsdev/varnish:4.1.0
-
-ENV VARNISH_MEMORY 1G
-```
 
 ## How to install VMODs (Varnish Modules)
 
@@ -71,7 +67,7 @@ To install Varnish Modules, you will need the Varnish source to compile against.
 Install VMODs in your Varnish project's Dockerfile. For example, to install the Querystring module:
 
 ```dockerfile
-FROM newsdev/varnish:4.1.0
+FROM frantsao/varnish:4.1.6
 
 # Install Querystring Varnish module
 ENV QUERYSTRING_VERSION=0.3
@@ -100,10 +96,5 @@ Please see [the Docker installation documentation](https://docs.docker.com/insta
 
 ## Issues
 
-If you have any problems with or questions about this image, please contact us through a [GitHub issue](https://github.com/newsdev/docker-varnish/issues).
+If you have any problems with or questions about this image, please contact me through a [GitHub issue](https://github.com/frantsao/docker-varnish/issues).
 
-## Contributing
-
-You are invited to contribute new features, fixes, or updates, large or small; we are always thrilled to receive pull requests, and do our best to process them as fast as we can.
-
-Before you start to code, we recommend discussing your plans through a [GitHub issue](https://github.com/docker-library/php/issues), especially for more ambitious contributions. This gives other contributors a chance to point you in the right direction, give you feedback on your design, and help you find out if someone else is working on the same thing.

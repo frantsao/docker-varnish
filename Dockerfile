@@ -1,32 +1,40 @@
-FROM debian:jessie
+FROM centos:latest
+MAINTAINER Fran Tsao <tsao@gpul.org>
+
+# Forked from https://github.com/newsdev/docker-varnish
 
 RUN \
-  useradd -r -s /bin/false varnishd
-
+  groupadd -g 972 varnish
+RUN \
+  useradd -u 972 -s /bin/false -g varnishd varnishd
 # Install Varnish source build dependencies.
 RUN \
-  apt-get update && apt-get install -y --no-install-recommends \
+  yum install -y \
     automake \
-    build-essential \
+    make \ 
+    gcc \ 
+    glibc-devel \
     ca-certificates \
     curl \
-    libedit-dev \
-    libjemalloc-dev \
-    libncurses-dev \
-    libpcre3-dev \
+    libedit-devel \
+    jemalloc-devel \
+    jemalloc \
+    ncurses-devel \
+    pcre-devel \
+    pcre \
     libtool \
-    pkg-config \
+    pkgconfig \
+    file \
+    dotconf \
     python-docutils \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
+  && yum clean all
 
 # Install Varnish from source, so that Varnish modules can be compiled and installed.
-ENV VARNISH_VERSION=4.1.0
-ENV VARNISH_SHA256SUM=4a6ea08e30b62fbf25f884a65f0d8af42e9cc9d25bf70f45ae4417c4f1c99017
+ENV VARNISH_VERSION=4.1.6
+ENV VARNISH_SHA256SUM=c7ac460b521bebf772868b2f5aefc2f2508a1e133809cd52d3ba1b312226e849
 RUN \
-  apt-get update && \
-  mkdir -p /usr/local/src && \
-  cd /usr/local/src && \
+  mkdir -p /usr/src && \
+  cd /usr/src && \
   curl -sfLO https://repo.varnish-cache.org/source/varnish-$VARNISH_VERSION.tar.gz && \
   echo "${VARNISH_SHA256SUM} varnish-$VARNISH_VERSION.tar.gz" | sha256sum -c - && \
   tar -xzf varnish-$VARNISH_VERSION.tar.gz && \
@@ -36,12 +44,6 @@ RUN \
   make install && \
   rm ../varnish-$VARNISH_VERSION.tar.gz
 
-COPY start-varnishd.sh /usr/local/bin/start-varnishd
+EXPOSE 8080
+ENTRYPOINT [ "/usr/local/sbin/varnishd", "-j", "unix,user=varnishd", "-F", "-f", "/etc/varnish/default.vcl", "-a", "0.0.0.0:8080" ]
 
-ENV VARNISH_PORT 80
-ENV VARNISH_MEMORY 100m
-
-EXPOSE 80
-CMD ["start-varnishd"]
-
-ONBUILD COPY default.vcl /etc/varnish/default.vcl
