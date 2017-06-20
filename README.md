@@ -17,7 +17,7 @@ This image is intended as a base image for other images to built on.
 ### Create a `Dockerfile` in your Varnish project
 
 ```dockerfile
-FROM fran.tsao/varnish:4.1.6
+FROM frantsao/varnish:4.1.6
 ```
 
 ### Create a `default.vcl` in your Varnish project and copy to the directory config (i.e. /var/lib/docker/etc-varnish)
