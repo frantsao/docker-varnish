@@ -2,7 +2,7 @@
 
 ## Supported tags and respective `Dockerfile` links
 
--	[`4.1.6`, `4.1`, `4`, `latest` (*4.1.6/Dockerfile*)](https://github.com/frantsao/docker-varnish/blob/master/Dockerfile)
+-	[`4.1.6`, `latest` (*4.1.6/Dockerfile*)](https://github.com/frantsao/docker-varnish/blob/4.1.6/Dockerfile)
 
 ## What is Varnish?
 
@@ -88,9 +88,7 @@ View [license information](https://www.apache.org/licenses/LICENSE-2.0) for the 
 
 # Supported Docker versions
 
-This image is supported on Docker version 1.9.1.
-
-Support for older versions (down to 1.6) is provided on a best-effort basis.
+This image is supported on Docker version 1.12.
 
 Please see [the Docker installation documentation](https://docs.docker.com/installation/) for details on how to upgrade your Docker daemon.
 
