@@ -30,8 +30,8 @@ RUN \
   && yum clean all
 
 # Install Varnish from source, so that Varnish modules can be compiled and installed.
-ENV VARNISH_VERSION=4.1.6
-ENV VARNISH_SHA256SUM=c7ac460b521bebf772868b2f5aefc2f2508a1e133809cd52d3ba1b312226e849
+ENV VARNISH_VERSION=4.1.8
+ENV VARNISH_SHA256SUM=908e7fbfa0325498717686b2050181134aa0a69d1495c02b2625cd34d35a4ff1
 RUN \
   mkdir -p /usr/src && \
   cd /usr/src && \
