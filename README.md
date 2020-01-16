@@ -2,7 +2,7 @@
 
 ## Supported tags and respective `Dockerfile` links
 
--	[`4.1.8`, `latest` (*4.1.8/Dockerfile*)](https://github.com/frantsao/docker-varnish/blob/4.1.8/Dockerfile)
+-	[`4.1.11`, `latest` (*4.1.11/Dockerfile*)](https://github.com/frantsao/docker-varnish/blob/4.1.11/Dockerfile)
 
 ## What is Varnish?
 
@@ -17,7 +17,7 @@ This image is intended as a base image for other images to built on.
 ### Create a `Dockerfile` in your Varnish project
 
 ```dockerfile
-FROM frantsao/varnish:4.1.8
+FROM frantsao/varnish:4.1.11
 ```
 
 ### Create a `default.vcl` in your Varnish project and copy to the directory config (i.e. /var/lib/docker/etc-varnish)
@@ -49,7 +49,7 @@ docker exec -it my-running-varnish varnishncsa -c -a -w /var/log/varnish/varnish
 You can override the port Varnish serves in your Dockerfile.
 
 ```dockerfile
-FROM frantsao/varnish:4.1.8
+FROM frantsao/varnish:4.1.11
 
 ENV VARNISH_PORT 80
 EXPOSE 80
@@ -67,7 +67,7 @@ To install Varnish Modules, you will need the Varnish source to compile against.
 Install VMODs in your Varnish project's Dockerfile. For example, to install the Querystring module:
 
 ```dockerfile
-FROM frantsao/varnish:4.1.8
+FROM frantsao/varnish:4.1.11
 
 # Install Querystring Varnish module
 ENV QUERYSTRING_VERSION=0.3

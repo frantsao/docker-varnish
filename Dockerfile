@@ -1,4 +1,4 @@
-FROM centos:latest
+FROM centos:7
 MAINTAINER Fran Tsao <tsao@gpul.org>
 
 # Forked from https://github.com/newsdev/docker-varnish
@@ -30,19 +30,19 @@ RUN \
   && yum clean all
 
 # Install Varnish from source, so that Varnish modules can be compiled and installed.
-ENV VARNISH_VERSION=4.1.8
-ENV VARNISH_SHA256SUM=908e7fbfa0325498717686b2050181134aa0a69d1495c02b2625cd34d35a4ff1
+ENV VARNISH_VERSION=4.1.11
+ENV VARNISH_SHA256SUM=f937a45116f3a7fbb38b2b5d7137658a4846409630bb9eccdbbb240e1a1379bc
 RUN \
   mkdir -p /usr/src && \
   cd /usr/src && \
-  curl -sfLO https://repo.varnish-cache.org/source/varnish-$VARNISH_VERSION.tar.gz && \
-  echo "${VARNISH_SHA256SUM} varnish-$VARNISH_VERSION.tar.gz" | sha256sum -c - && \
-  tar -xzf varnish-$VARNISH_VERSION.tar.gz && \
+  curl -sfLO https://varnish-cache.org/_downloads/varnish-$VARNISH_VERSION.tgz && \
+  echo "${VARNISH_SHA256SUM} varnish-$VARNISH_VERSION.tgz" | sha256sum -c - && \
+  tar -xzf varnish-$VARNISH_VERSION.tgz && \
   cd varnish-$VARNISH_VERSION && \
   ./autogen.sh && \
   ./configure && \
   make install && \
-  rm ../varnish-$VARNISH_VERSION.tar.gz
+  rm ../varnish-$VARNISH_VERSION.tgz
 
 EXPOSE 8080
 ENTRYPOINT [ "/usr/local/sbin/varnishd", "-j", "unix,user=varnish", "-F", "-f", "/etc/varnish/default.vcl", "-a", "0.0.0.0:8080" ]
